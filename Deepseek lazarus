@@ -1,0 +1,6 @@
+Lazarus IDE → DeepSeek Plugin → API Client → DeepSeek AI
+                     │
+                     ├── Code Completion
+                     ├── Error Explanation
+                     ├── Documentation Lookup
+                     └── Refactoring Suggestions
