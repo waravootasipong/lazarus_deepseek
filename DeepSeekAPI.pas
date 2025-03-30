@@ -76,4 +76,35 @@ begin
   end;
 end;
 
+procedure Register;
+begin
+  RegisterIDEMenuCommand(itmSecondaryTools, 'DeepSeekSettings', 'DeepSeek Settings...',
+    nil, @ShowDeepSeekSettings);
+  RegisterIDEMenuCommand(itmEdit, 'DeepSeekAsk', 'Ask DeepSeek',
+    nil, @AskCurrentSelection);
+end;
+
+procedure TDeepSeekCompletion.AddCompletion(const AEditor: TSourceEditorInterface);
+var
+  Client: TDeepSeekClient;
+  Suggestion: string;
+begin
+  Client := TDeepSeekClient.Create(GetAPIKey);
+  try
+    Suggestion := Client.Query('Complete this Pascal code: ' + 
+      AEditor.GetTextBetweenPoints(Point(1,1), AEditor.CursorTextXY));
+    if Suggestion <> '' then
+      AEditor.InsertTextAtCaret(Suggestion);
+  finally
+    Client.Free;
+  end;
+end;
+procedure ExplainCompilerError(ErrorMsg: string);
+var
+  Explanation: string;
+begin
+  Explanation := DeepSeekClient.Query('Explain this Pascal compiler error: ' + ErrorMsg);
+  ShowMessage(Explanation);
+end;
+
 end.
